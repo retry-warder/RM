@@ -1,0 +1,146 @@
+package main
+
+/*import (
+	"encoding/json"
+	"fmt"
+	"log"
+)
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p *Person) MarshalJSON() ([]byte, error) {
+	fmt.Println(p.Name + " is cool in marshaling")
+	return json.Marshal(*p)
+}
+
+func (p *Person) UnmarshalJSON(data []byte) error {
+	type person Person
+	tmp := &person{}
+	err := json.Unmarshal(data, tmp)
+	if err != nil {
+		return err
+	}
+	*p = Person(*tmp)
+	return nil
+}
+
+func main() {
+	var p Person
+	if err := json.Unmarshal([]byte(`{"Name": "Vasya", "Age": 32}`), &p); err != nil {
+		log.Fatal(err)
+	}
+
+	data, err := json.Marshal(p)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(data))
+}*/
+
+import (
+	"encoding/json"
+	"fmt"
+	//"github.com/retry-warder/course-otus-golang-basics/hw09_serialize/types_pb"
+	//"github.com/retry-warder/course-otus-golang-basics/hw09_serialize/types"
+	//"google.golang.org/protobuf/proto"
+)
+
+type Book struct {
+	Id     int     `json:"id"`
+	Title  string  `json:"title"`
+	Author string  `json:"author,omitempty"`
+	Year   int     `json:"year"`
+	Size   int     `json:"size"`
+	Rate   float64 `json:"-"`
+}
+
+func NewBook(id int, title string, author string, year int, size int, rate float64) Book {
+	book := new(Book)
+	book.Id = id
+	book.Title = title
+	book.Author = author
+	book.Year = year
+	book.Size = size
+	book.Rate = rate
+	return *book
+}
+
+func (b *Book) String() string {
+
+	tmplts := "[id: %d, title: %s, author %s, year: %d, size: %d, rate: %f]"
+	return fmt.Sprintf(tmplts, b.Id, b.Title, b.Author, b.Year, b.Size, b.Rate)
+}
+
+func (p *Book) MarshalJSON() ([]byte, error) {
+	return json.Marshal(*p)
+}
+
+func (p *Book) UnmarshalJSON(data []byte) error {
+	type b Book
+	tmp := &b{}
+	err := json.Unmarshal(data, tmp)
+	if err != nil {
+		return err
+	}
+	*p = Book(*tmp)
+	return nil
+}
+
+func main() {
+	b1 := NewBook(1, "Test 1", "Test.T.T", 2010, 1000, 10.10)
+	j1, err := json.Marshal(&b1)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("b1 json %s\n", j1)
+
+	err = json.Unmarshal(j1, &b1)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%v\n", b1)
+
+	/*b2 := types.NewBook(1, "Test 2", "Test.X.Y", 2000, 1500, 10.90)
+	j2, err := json.Marshal(b2)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("b2 json %s\n", j2)
+	var books1 types.Books
+	books1 = append(books1, b1, b2)
+	j := books1.EnCodeJSON()
+	fmt.Printf("books json %s\n", string(j))
+
+	b3 := types_pb.NewBook(1, "Test 1", "Test.T.T", 2010, 1000, 10.10)
+	marshaled1, err := proto.Marshal(b3)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("marshaled len %d message = %s\n", len(marshaled1), string(marshaled1))
+	fmt.Println(marshaled1)
+
+	b4 := types_pb.NewBook(1, "Test 2", "Test.X.Y", 2000, 1500, 10.90)
+	marshaled2, err := proto.Marshal(b4)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("marshaled len %d message = %s\n", len(marshaled2), string(marshaled2))
+	fmt.Println(marshaled2)
+
+	var list_books []*types_pb.Book
+	list_books = append(list_books, b3, b4)
+
+	var books2 types_pb.Books
+	books2.Value = list_books
+
+	m, err := proto.Marshal(&books2)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("marshaled len %d message = %s\n", len(m), string(m))
+	fmt.Println(m)*/
+
+}
