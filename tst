@@ -34,3 +34,15 @@ func main() {
 
  fmt.Println(fmt.Sprintf("%v", newSliceMyStruct))
 }
+
+func (d *Data) UnmarshalJSON(b []byte) error {
+    type data Data
+    tmp := &data{bar: "bar"}
+    err := json.Unmarshal(b, tmp)
+    if err != nil {
+        return err
+    }
+    *d = Data(*tmp)
+    return nil
+}
+
